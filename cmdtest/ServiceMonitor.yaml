@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor  #资源类型为ServiceMonitor
+metadata:
+  labels:
+    prometheus: kube-prometheus #prometheus默认通过 prometheus: kube-prometheus发现ServiceMonitor，只要写上这个标签prometheus服务就能发现这个ServiceMonitor
+  name: prometheus-exporter-mysql
+  namespace: monitoring
+spec:
+  jobLabel: app #jobLabel指定的标签的值将会作为prometheus配置文件中scrape_config下job_name的值，也就是Target，如果不写，默认为service的name
+  selector:
+    matchLabels: #该ServiceMonitor匹配的Service的labels，如果使用mathLabels，则下面的所有标签都匹配时才会匹配该service，如果使用matchExpressions，则至少匹配一个标签的service都会被选择
+      app: prometheus-mysql-exporter # 由于前面查看mysql-exporter的service信息中标签包含了app: prometheus-mysql-exporter这个标签，写上就能匹配到
+  namespaceSelector:
+    #any: true #表示从所有namespace中去匹配，如果只想选择某一命名空间中的service，可以使用matchNames: []的方式
+    matchNames:
+    - default
+  endpoints:
+  - port: mysql-exporter #前面查看mysql-exporter的service信息中，提供mysql监控信息的端口是Port: mysql-exporter  9104/TCP，所以这里填mysql-exporter
+    interval: 30s #每30s获取一次信息
+  # path: /metrics HTTP path to scrape for metrics，默认值为/metrics
+    honorLabels: true
