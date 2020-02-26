@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment            #副本控制器Deployment
+metadata:
+  name: mysql                          #Deployment的名称，全局唯一
+spec:
+  replicas: 1                          #Pod副本的期待数量
+  template:                            #根据此模版创建Pod的副本（实例）
+    metadata:
+       labels:
+         app: mysql                    #Pod副本拥有的标签，对应Deployment的selector
+    spec:
+       containers:                     #Pod内，定义容器
+       - name: mysql                   #容器名称
+         image: mysql:5.7              #Docker image
+         ports:
+         - containerPort: 3306         #容器应用监听的端口
+         env:                          #注入容器内的环境变量
+         - name: MYSQL_ROOT_PASSWORD   #这里设置root初始密码
+           value: "123456"
