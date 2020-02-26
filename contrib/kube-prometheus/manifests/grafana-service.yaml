@@ -8,6 +8,6 @@ spec:
   ports:
   - name: http
     port: 3000
-    nodePort: 31466
+    nodePort: 32339
   selector:
     app: grafana
