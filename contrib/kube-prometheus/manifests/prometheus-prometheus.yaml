@@ -31,6 +31,5 @@ spec:
     name: additional-configs
     key: prometheus-additional.yaml
   serviceAccountName: prometheus-k8s
-  serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
   version: v2.11.0
