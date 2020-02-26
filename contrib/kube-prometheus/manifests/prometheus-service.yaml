@@ -10,7 +10,7 @@ spec:
   ports:
   - name: web
     port: 9090
-    nodePort: 31114
+    nodePort: 31466
   selector:
     app: prometheus
     prometheus: k8s
